@@ -52,24 +52,33 @@ contract CSAMM {
 
         // optimise for gas costs
         bool isToken0 = _tokenIn == address(token0);
-        (IERC20 tokenIn, IERC20 tokenOut, uint resIn, uint resOut) = isToken0 ? (token0, token1, reserve0, reserve1) : (token1, token0, reserve1, reserve0);
+        (IERC20 tokenIn, IERC20 tokenOut, uint256 resIn, uint256 resOut) =
+            isToken0 ? (token0, token1, reserve0, reserve1) : (token1, token0, reserve1, reserve0);
 
         // transfer token in
         tokenIn.transferFrom(msg.sender, address(this), _amountIn);
-        uint amountIn = tokenIn.balanceOf(address(this)) - resIn;
+        uint256 amountIn = tokenIn.balanceOf(address(this)) - resIn;
 
         // calculate amount out (include fees) fee = 0.3%
         amountOut = (amountIn * 997) / 1000;
 
         // update reserve0 and reserve1
-        (uint res0, uint res1) = isToken0 ? (resIn + _amountIn, resOut - amountOut) : (resOut - amountOut, resIn + _amountIn);
+        (uint256 res0, uint256 res1) =
+            isToken0 ? (resIn + _amountIn, resOut - amountOut) : (resOut - amountOut, resIn + _amountIn);
         _update(res0, res1);
 
         // transfer token out
         tokenOut.transfer(msg.sender, amountOut);
     }
 
-    function addLiquidity() external {}
+    // add tokens to AMM to add fees
+    function addLiquidity(uint _amount0, uint _amount1) external returns (shares) {
+        token0.transferFrom(msg.sender, address(this), _amount0);
+        token1.transferFrom(msg.sender, address(this), _amount1);
+
+        uint bal0 = token0.balanceOf(address(this));
+        uint bal1 = token1.balanceOf(address(this));
+    }
 
     function removeLiquidity() external {}
 }
