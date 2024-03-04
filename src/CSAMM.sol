@@ -72,12 +72,31 @@ contract CSAMM {
     }
 
     // add tokens to AMM to add fees
-    function addLiquidity(uint _amount0, uint _amount1) external returns (shares) {
+    function addLiquidity(uint256 _amount0, uint256 _amount1) external returns (uint256 shares) {
         token0.transferFrom(msg.sender, address(this), _amount0);
         token1.transferFrom(msg.sender, address(this), _amount1);
 
-        uint bal0 = token0.balanceOf(address(this));
-        uint bal1 = token1.balanceOf(address(this));
+        // get balance of token 0 and token 1
+        uint256 bal0 = token0.balanceOf(address(this));
+        uint256 bal1 = token1.balanceOf(address(this));
+
+        // get amount of tokens that came in
+        uint256 d0 = bal0 - reserve0;
+        uint256 d1 = bal1 - reserve1;
+
+        // Mint shares to user and update reserves
+        if (totalSupply == 0) {
+            shares = d0 + d1;
+        } else {
+            shares = ((d0 + d1) * totalSupply) / (reserve0 + reserve1);
+        }
+
+        // mint shares
+        require(shares > 0, "shares = 0");
+        _mint(msg.sender, shares);
+
+        // update balances
+        _update(bal0, bal1);
     }
 
     function removeLiquidity() external {}
