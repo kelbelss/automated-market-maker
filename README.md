@@ -1,66 +1,15 @@
-## Solidity Automated Market Maker
+## Solidity Constant Sum Automated Market Maker
 
 **Constant Sum - built in Foundry Environment**
 
-Foundry consists of:
+Built following the Smart Contract Programmers video [Constant Sum AMM Math | DeFi](https://www.youtube.com/watch?v=Luff_OGvYtI&list=PLO5VPQH6OWdX-Rh7RonjZhOd9pb9zOnHW&index=40)
 
-- **Forge**: Ethereum testing framework (like Truffle, Hardhat and DappTools).
-- **Cast**: Swiss army knife for interacting with EVM smart contracts, sending transactions and getting chain data.
-- **Anvil**: Local Ethereum node, akin to Ganache, Hardhat Network.
-- **Chisel**: Fast, utilitarian, and verbose solidity REPL.
+## Overview
 
-## Documentation
+This CSAMM is a simplified implementation of a Constant Sum Automated Market Maker (AMM) using the Solidity programming language. This smart contract facilitates the trading of two ERC20 tokens, allowing users to add and remove liquidity from the pool and swap tokens. 
 
-https://book.getfoundry.sh/
+## Features
 
-## Usage
-
-### Build
-
-```shell
-$ forge build
-```
-
-### Test
-
-```shell
-$ forge test
-```
-
-### Format
-
-```shell
-$ forge fmt
-```
-
-### Gas Snapshots
-
-```shell
-$ forge snapshot
-```
-
-### Anvil
-
-```shell
-$ anvil
-```
-
-### Deploy
-
-```shell
-$ forge script script/Counter.s.sol:CounterScript --rpc-url <your_rpc_url> --private-key <your_private_key>
-```
-
-### Cast
-
-```shell
-$ cast <subcommand>
-```
-
-### Help
-
-```shell
-$ forge --help
-$ anvil --help
-$ cast --help
-```
+- **Token Swapping**: Users can swap between two tokens with a 0.3% fee.
+- **Liquidity Provision**: Users can add liquidity to the pool, earning shares representing their contribution.
+- **Liquidity Removal**: Users can remove their liquidity, receiving back the underlying tokens.
